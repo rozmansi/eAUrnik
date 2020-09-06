@@ -25,4 +25,4 @@ class handle_requested(Resource):
 api.add_resource(handle_requested, "/urniki/<string:sola>/razredi/<int:razredi>/dijak/<int:dijak>")
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='::')
