@@ -1,6 +1,6 @@
 # eAUrnik
 
-REST API za urnike iz eAsistenta v formatu iCal, napisan v Pythonu 3. Vrne urnik za akutalni teden, od sobote naprej pa za naslednji.
+REST API za urnike iz eAsistenta v formatu iCal, napisan v Pythonu 3. Vrne urnik za celotno šolsko leto.
 
 ## Namestitev
 

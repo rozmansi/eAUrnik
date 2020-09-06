@@ -7,23 +7,27 @@ from Calendar import makeCalendar
 
 def handle(sola, razred, dijak):
     today = datetime.datetime.today()
-    monday = today + datetime.timedelta(days = -today.weekday())
-    if today.weekday() == 5 or today.weekday() == 6:
-        monday += datetime.timedelta(weeks = 1)
-
     schoolyear = today.year
     if today.month < 8:
         schoolyear -= 1
     schoolyearStart = datetime.date(schoolyear, 9, 1)
-    while schoolyearStart.weekday() == 5 or schoolyearStart.weekday() == 6:
-        schoolyearStart += datetime.timedelta(days=1)
+    schoolyearEnd = datetime.date(schoolyear + 1, 6, 24)
 
-    teden = rrule.rrule(rrule.WEEKLY, dtstart=schoolyearStart, until=monday).count()
-    URL = "https://www.easistent.com/urniki/izpis/" + sola + "/" + str(razred) + "/0/0/0/" + str(teden) + "/" + str(dijak)
-    page = requests.get(URL)
-    parsed = parse(page)
+    parseds = []
+    mondays = []
 
-    if not parsed:
-        return
-    else:
-        return makeCalendar(parsed, monday)
+    teden = 1
+    monday = schoolyearStart + datetime.timedelta(days = -schoolyearStart.weekday())
+    while teden <= 42:
+        URL = "https://www.easistent.com/urniki/izpis/" + sola + "/" + str(razred) + "/0/0/0/" + str(teden) + "/" + str(dijak)
+        page = requests.get(URL)
+        parsed = parse(page)
+
+        if parsed:
+            parseds.append(parsed)
+            mondays.append(monday)
+
+        teden += 1
+        monday += datetime.timedelta(weeks = 1)
+
+    return makeCalendar(parseds, mondays)
